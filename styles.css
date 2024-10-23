@@ -1,0 +1,138 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+body {
+    color: hsl(248, 53%, 3%);
+    background-color: hsl(248, 53%, 97%);
+    margin: 1.25em;
+}
+
+section {
+    padding: 2vh 25vw;
+    text-align: left;
+    p {
+        padding: 1vh 0vw;
+    }
+}
+
+.form-container {
+    margin-top: 1em;
+    margin-bottom: 1.25em;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: row;
+}
+
+.toggle-rent, .add-rent {
+    margin-top: 0.75em;
+}
+
+#scenarios {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 20px;
+}
+
+.scenario {
+    flex: 1 1 auto;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.results {
+    margin-top: auto; /* Bottom */
+}
+
+label {
+    display: inline-block;
+    width: 25vw;
+    margin-bottom: 0.75rem;
+    color: hsl(248, 53%, 3%);
+}
+
+input, select {
+    padding: 0.75rem;
+    border: 0.1rem solid hsl(248, 53%, 97%);
+    border-radius: 0.25rem;
+    margin-bottom: 0.75rem;
+    width: 5vw;
+    min-width: 6.5em;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+input:focus, select:focus {
+    border-color: hsl(248, 53%, 58%);
+    outline: none;
+}
+
+small {
+    color: red; 
+    display: none;
+    text-align: center;
+}
+
+.invalid {
+    border: 2px solid red;
+}
+
+button {
+    max-width: 16rem;
+    display: inline-block;
+    border-radius: 0.25rem;
+    margin-top: 0.5em;
+    padding: 0.75em 1.25em;
+    background-color: hsl(248, 53%, 95%);
+    border: 0.1rem solid;
+    transition: border 0.3s ease;
+}
+
+button:hover {
+    background-color: hsl(248, 53%, 90%);
+    border: 0.1rem solid hsl(248, 53%, 58%);
+    transition: background-color 0.3s ease;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 0.0675em solid black;
+    padding: 0.0675em;
+    text-align: center;
+}
+
+#amortizationTable {
+    margin-top: 1em;
+}
+
+.results-table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+.results-table td {
+    padding: 8px 10px;
+    text-align: left;
+}
+
+.results-table td:first-child {
+    font-weight: bold;
+}
+
+.results-table tr:not(:last-child) td {
+    padding-bottom: 10px;
+}

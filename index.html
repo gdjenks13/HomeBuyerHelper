@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Buying Helper</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Compare Homebuying Scenarios</h1>
+
+    <div id="scenarios"></div>
+    
+    <button id="add-scenario">Add Scenario</button>
+    <button id="calculate">Calculate</button>
+
+    <template id="scenario-template">
+        <div class="scenario">
+            <h3 contenteditable="true">Scenario</h3>
+            <div class="inputs">
+                <div class="rent-container">
+                    <h2>Rent</h2>
+                    <div class="form-group">
+                        <label for="rentPrice">Monthly Rent ($):</label>
+                        <input type="number" class="rentPrice" value="1200">
+                    </div>
+                    <div class="form-group">
+                        <label for="rentInsurance">Rent Insurance Rate (%):</label>
+                        <input type="number" class="rentInsurance" value="1.8">
+                    </div>
+                    <div class="form-group">
+                        <label for="rentTime">Rental Time (years):</label>
+                        <input type="number" class="rentTime" value="2">
+                    </div>
+                </div>
+
+                <button class="toggle-rent">Hide Renting</button>
+                <button class="add-rent" style="display: none;">Add Renting</button>
+
+                <div class="buy-container">
+                    <h2>Buying Options</h2>
+                    <div class="form-group">
+                        <label for="homePrice">Home Purchase Price ($):</label>
+                        <input type="number" class="homePrice" value="400000">
+                    </div>
+                    <div class="form-group">
+                        <label for="downPayment">Down Payment ($):</label>
+                        <input type="number" class="downPayment" value="80000">
+                    </div>
+                    <div class="form-group">
+                        <label for="loanTerm">Loan Term (years):</label>
+                        <select class="loanTerm">
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="30" selected>30</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="interestRate">Interest Rate (%):</label>
+                        <input type="number" class="interestRate" value="5.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="propertyTax">Property Tax Rate (%):</label>
+                        <input type="number" class="propertyTax" value="1.4">
+                    </div>
+                    <div class="form-group">
+                        <label for="homeInsurance">Home Insurance Rate (%):</label>
+                        <input type="number" class="homeInsurance" value="0.4">
+                    </div>
+                    <div class="form-group">
+                        <label for="pmi">PMI Rate (%):</label>
+                        <input type="number" class="pmi" value="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="appreciation">Appreciation Rate (%):</label>
+                        <input type="number" class="appreciation" value="2">
+                    </div>
+                </div>
+            </div>
+            <button class="toggle-display">Toggle Monthly/Yearly</button>
+            <button id="toggle-amortization">Show Amortization Table</button>
+            <button class="remove-scenario">Remove Scenario</button>
+        
+            <div class="results"></div>
+            <div class="amortizationTable"></div>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>
