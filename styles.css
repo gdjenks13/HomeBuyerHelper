@@ -2,31 +2,32 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family:'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
     color: hsl(248, 53%, 3%);
-    background-color: hsl(248, 53%, 97%);
+    background-color: white;
     margin: 1.25em;
 }
 
 section {
     padding: 2vh 25vw;
     text-align: left;
-    p {
-        padding: 1vh 0vw;
-    }
+}
+
+section p {
+    padding: 1vh 0;
 }
 
 .form-container {
-    margin-top: 1em;
-    margin-bottom: 1.25em;
+    margin: 1em 0 1.25em;
 }
 
 .form-group {
     display: flex;
     flex-direction: row;
+    gap: 0.5em;
 }
 
 .toggle-rent, .add-rent {
@@ -35,50 +36,60 @@ section {
 
 #scenarios {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: stretch;
-    gap: 20px;
+    gap: 0.75em;
 }
 
 .scenario {
-    flex: 1 1 auto;
-    min-width: 300px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px;
-    border: 1px solid #ccc;
-}
-
-.results {
-    margin-top: auto; /* Bottom */
+    flex: 0 0 auto;
+    min-width: 16em;
+    padding: 0.75em;
+    background-color: white;
+    border: 1px solid hsl(248, 53%, 90%);
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 label {
-    display: inline-block;
-    width: 25vw;
+    height: 1rem;
+    width: 12rem;
+    padding: 0.75rem 0;
     margin-bottom: 0.75rem;
     color: hsl(248, 53%, 3%);
 }
 
+.inputs {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-buttons {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em;
+}
+
 input, select {
-    padding: 0.75rem;
-    border: 0.1rem solid hsl(248, 53%, 97%);
+    padding: 0.25rem;
+    border: 0.1rem solid hsl(248, 53%, 90%);
     border-radius: 0.25rem;
-    margin-bottom: 0.75rem;
-    width: 5vw;
-    min-width: 6.5em;
+    margin-bottom: 0.25rem;
+    width: 6em;
     box-sizing: border-box;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 input:focus, select:focus {
     border-color: hsl(248, 53%, 58%);
     outline: none;
+    box-shadow: 0 0 5px rgba(56, 142, 255, 0.5);
 }
 
 small {
-    color: red; 
+    color: red;
     display: none;
     text-align: center;
 }
@@ -94,18 +105,18 @@ button {
     margin-top: 0.5em;
     padding: 0.75em 1.25em;
     background-color: hsl(248, 53%, 95%);
-    border: 0.1rem solid;
-    transition: border 0.3s ease;
+    border: 0.1rem solid hsl(248, 53%, 90%);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 button:hover {
     background-color: hsl(248, 53%, 90%);
-    border: 0.1rem solid hsl(248, 53%, 58%);
-    transition: background-color 0.3s ease;
+    border-color: hsl(248, 53%, 58%);
 }
 
 table {
     border-collapse: collapse;
+    width: 100%;
 }
 
 th, td {
@@ -114,8 +125,14 @@ th, td {
     text-align: center;
 }
 
-#amortizationTable {
-    margin-top: 1em;
+.amortizationTable {
+    max-width: 100%;
+}
+
+.results {
+    flex-shrink: 0;
+    margin-top: auto;
+    max-width: max-content;
 }
 
 .results-table {

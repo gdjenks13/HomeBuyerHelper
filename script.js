@@ -1,5 +1,4 @@
 let displayByYear = false;
-let tableVisible = true;
 
 document.addEventListener('DOMContentLoaded', function () {
     const scenariosDiv = document.getElementById('scenarios');
@@ -21,47 +20,71 @@ document.addEventListener('DOMContentLoaded', function () {
         const removeButton = clone.querySelector('.remove-scenario');
         removeButton.addEventListener('click', function () {
             scenariosDiv.removeChild(scenarioElement);
+            setSameHeight(document.querySelectorAll('.inputs'))
+            setSameHeight(document.querySelectorAll('.results'))
         });
 
         const rentContainer = clone.querySelector('.rent-container');
-        const toggleRentButton = clone.querySelector('.toggle-rent');
+        const removeRentButton = clone.querySelector('.remove-rent');
         const addRentButton = clone.querySelector('.add-rent');
         const toggleDisplayButton = clone.querySelector('.toggle-display');
         const toggleAmortizationButton = clone.querySelector('#toggle-amortization');
         const amortizationTableDiv = clone.querySelector('.amortizationTable');
 
-        toggleRentButton.addEventListener('click', function () {
+        removeRentButton.addEventListener('click', function () {
             const rentInputs = rentContainer.querySelectorAll('input[type="number"]');
             rentInputs.forEach(input => {
                 input.value = 0;
             });
         
             rentContainer.style.display = 'none';
-            toggleRentButton.style.display = 'none';
+            removeRentButton.style.display = 'none';
             addRentButton.style.display = 'inline';
+            setSameHeight(document.querySelectorAll('.inputs'))
+            setSameHeight(document.querySelectorAll('.results'))
         });
 
         addRentButton.addEventListener('click', function () {
             rentContainer.style.display = 'block';
-            toggleRentButton.style.display = 'inline';
+            removeRentButton.style.display = 'inline';
             addRentButton.style.display = 'none';
+            setSameHeight(document.querySelectorAll('.inputs'))
+            setSameHeight(document.querySelectorAll('.results'))
         });
 
         toggleDisplayButton.addEventListener('click', function () {
             displayByYear = !displayByYear;
             toggleDisplayButton.textContent = displayByYear ? 'Switch to Monthly' : 'Switch to Yearly';
             calculateSingleScenario(scenarioElement);
+            setSameHeight(document.querySelectorAll('.inputs'))
+            setSameHeight(document.querySelectorAll('.results'))
         });
 
         toggleAmortizationButton.addEventListener('click', function () {
             const isHidden = amortizationTableDiv.style.display === 'none';
-            amortizationTableDiv.style.display = isHidden ? 'block' : 'none';
+            amortizationTableDiv.style.display = isHidden ? 'contents' : 'none';
             toggleAmortizationButton.textContent = isHidden ? 'Hide Amortization Table' : 'Show Amortization Table';
+            setSameHeight(document.querySelectorAll('.inputs'))
+            setSameHeight(document.querySelectorAll('.results'))
         });
 
         amortizationTableDiv.style.display = 'none';
 
         scenariosDiv.appendChild(clone);
+    }
+
+    function setSameHeight(desiredQuery) {
+        let maxHeight = 0;
+
+        desiredQuery.forEach(input => {
+            input.style.height = 'auto';
+            const height = input.offsetHeight;
+            maxHeight = Math.max(maxHeight, height);
+        });
+
+        desiredQuery.forEach(input => {
+            input.style.height = `${maxHeight}px`;
+        });
     }
 
     function calculateScenarios() {
@@ -70,6 +93,9 @@ document.addEventListener('DOMContentLoaded', function () {
         scenarios.forEach(scenario => {
             calculateSingleScenario(scenario);
         });
+
+        setSameHeight(document.querySelectorAll('.inputs'))
+        setSameHeight(document.querySelectorAll('.results'))
     }
 
     function calculateSingleScenario(scenario)
@@ -106,10 +132,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <table>
                                     <tr>
                                         <th>${displayByYear ? 'Year' : 'Month'}</th>
-                                        <th>${displayByYear ? 'Mortgage Payments' : 'Mortgage Payment'}</th>
+                                        <th>${displayByYear ? 'Payments' : 'Payment'}</th>
                                         ${pmiPresentAtStart ? '<th>PMI</th>' : ''}
                                         <th>Property Tax</th>
-                                        <th>Home Insurance</th>
+                                        <th>Insurance</th>
                                         <th>Total Cost</th>
                                         <th>Remaining Balance</th>
                                         <th>Current Equity</th>
@@ -118,6 +144,22 @@ document.addEventListener('DOMContentLoaded', function () {
         if (displayByYear) {
             let adjustedYearlyPmi = yearlyPmi;
             let pmiPresentNow = pmiPresentAtStart;
+            let yearlyRentPrice = rentPrice * 12;
+            let yearlyRentInsurance = yearlyRentPrice * rentInsurance;
+            for (rentYear = 1; rentYear <= rentTime; rentYear++)
+                {
+                    amortizationTable += `<tr>
+                                        <td>${rentYear}</td>
+                                        <td>${formatValue(yearlyRentPrice)}</td>
+                                        ${pmiPresentAtStart 
+                                            ? `<td></td>` : ''}
+                                        <td>${formatValue(0)}</td>
+                                        <td>${formatValue(yearlyRentInsurance)}</td>
+                                        <td>${formatValue(yearlyRentPrice + yearlyRentInsurance)}</td>
+                                        <td>${formatValue(0)}</td>
+                                        <td>${formatValue(0)}</td>
+                                    </tr>`;
+                }
             for (let year = 1; year <= loanTerm / 12; year++) {
                 for (let i = 0; i < 12; i++) {
                     remainingMortgage -= monthlyPayment - remainingMortgage * monthlyInterestRate;
@@ -160,6 +202,21 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
         } else {
+            let monthlyRentInsurance = rentInsurance * rentPrice;
+            for (rentMonth = 1; rentMonth <= rentTime * 12; rentMonth++)
+                {
+                    amortizationTable += `<tr>
+                                        <td>${rentMonth}</td>
+                                        <td>${formatValue(rentPrice)}</td>
+                                        ${pmiPresentAtStart 
+                                            ? `<td></td>` : ''}
+                                        <td>${formatValue(0)}</td>
+                                        <td>${formatValue(monthlyRentInsurance)}</td>
+                                        <td>${formatValue(rentPrice + monthlyRentInsurance)}</td>
+                                        <td>${formatValue(0)}</td>
+                                        <td>${formatValue(0)}</td>
+                                    </tr>`;
+                }
             for (let month = 1; month <= loanTerm; month++) {
                 let homePricePaid = monthlyPayment - remainingMortgage * monthlyInterestRate;
                 remainingMortgage -= homePricePaid;
@@ -208,11 +265,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         scenario.querySelector('.results').innerHTML = results;
         scenario.querySelector('.amortizationTable').innerHTML = amortizationTable;
-
-        let table = scenario.querySelector('.amortizationTable');
-        if (!tableVisible) {
-            table.style.display = 'none';
-        }
     }
 
     function formatValue(value) {
