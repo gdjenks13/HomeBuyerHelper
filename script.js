@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let totalRentCost = 12 * ((rentPrice + (rentInsurance * rentPrice)) * rentTime)
         let results = `<h2>Results</h2>
         <table class="results-table">
-            ${totalRentCost === 0 ? '' : `<tr><td>Total Rent Cost:</td><td>${formatValue(totalRentCost)}</td></tr>`}
+            <tr><td>Total Rent Cost:</td><td>${formatValue(totalRentCost)}</td></tr>
             <tr><td>Mortgage Payment:</td><td>${formattedMonthlyPayment}</td></tr>
             <tr><td>Total Mortgage Cost:</td><td>${formatValue(totalMortgageCost)}</td></tr>
             <tr><td>Total Housing Cost:</td><td>${formatValue(totalHousingCost + totalRentCost)}</td></tr>
