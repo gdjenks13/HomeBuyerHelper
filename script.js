@@ -110,6 +110,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const loanTerm = parseInt(scenario.querySelector('.loanTerm').value) * 12;
         const homeInsuranceRate = parseFloat(scenario.querySelector('.homeInsurance').value) / 100;
         const pmiRate = parseFloat(scenario.querySelector('.pmi').value) / 100;
+        const closingCosts = parseFloat(scenario.querySelector('.closingCosts').value) / 100 * homePurchasePrice;
+        const maintenanceCosts = parseFloat(scenario.querySelector('.maintenanceCosts').value) / 100
         let pmiPresentAtStart = (downPayment / homePurchasePrice) < 0.2;
         const appreciationRate = 1 + parseFloat(scenario.querySelector('.appreciation').value) / 100;
 
@@ -137,6 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                         <th>Property Tax</th>
                                         <th>Insurance</th>
                                         <th>Total Cost</th>
+                                        <th>Maintenance</th>
                                         <th>Remaining Balance</th>
                                         <th>Current Equity</th>
                                     </tr>`;
@@ -158,6 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                         <td>${formatValue(yearlyRentPrice + yearlyRentInsurance)}</td>
                                         <td>${formatValue(0)}</td>
                                         <td>${formatValue(0)}</td>
+                                        <td>${formatValue(0)}</td>
                                     </tr>`;
                 }
             for (let year = 1; year <= loanTerm / 12; year++) {
@@ -170,7 +174,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 let totalYearlyMortgageCost = monthlyPayment * 12 + (pmiPresentNow ? adjustedYearlyPmi : 0);
-                let totalYearlyHousingCost = totalYearlyMortgageCost + yearlyPropertyTax + yearlyHomeInsurance;
+                let yearlyMaintenanceCost = maintenanceCosts * homeCurrentValue;
+                let totalYearlyHousingCost = totalYearlyMortgageCost + yearlyPropertyTax + yearlyHomeInsurance + yearlyMaintenanceCost;
+                
 
                 totalMortgageCost += totalYearlyMortgageCost;
                 totalHousingCost += totalYearlyHousingCost;
@@ -188,6 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <td>${formatValue(yearlyPropertyTax)}</td>
                                 <td>${formatValue(yearlyHomeInsurance)}</td>
                                 <td>${formatValue(totalYearlyHousingCost)}</td>
+                                <td>${formatValue(yearlyMaintenanceCost)}</td>
                                 <td>${formatValue(remainingMortgage)}</td>
                                 <td>${formatValue(homeCurrentValue - remainingMortgage)}</td>
                             </tr>`;
@@ -215,6 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                         <td>${formatValue(rentPrice + monthlyRentInsurance)}</td>
                                         <td>${formatValue(0)}</td>
                                         <td>${formatValue(0)}</td>
+                                        <td>${formatValue(0)}</td>
                                     </tr>`;
                 }
             for (let month = 1; month <= loanTerm; month++) {
@@ -222,8 +230,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 remainingMortgage -= homePricePaid;
                 let pmiPresentNow = remainingMortgage / homePurchasePrice > 0.8;
 
+                let monthlyMaintenanceCost = (maintenanceCosts * homeCurrentValue) / 12;
                 let totalMonthlyMortgageCost = monthlyPayment + (pmiPresentNow ? yearlyPmi / 12 : 0);
-                let totalMonthlyHousingCost = totalMonthlyMortgageCost + yearlyPropertyTax / 12 + yearlyHomeInsurance / 12;
+                let totalMonthlyHousingCost = totalMonthlyMortgageCost + yearlyPropertyTax / 12 + yearlyHomeInsurance / 12 + monthlyMaintenanceCost;
 
                 totalMortgageCost += totalMonthlyMortgageCost;
                 totalHousingCost += totalMonthlyHousingCost;
@@ -239,6 +248,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <td>${formatValue(yearlyPropertyTax / 12)}</td>
                                 <td>${formatValue(yearlyHomeInsurance / 12)}</td>
                                 <td>${formatValue(totalMonthlyHousingCost)}</td>
+                                <td>${formatValue(monthlyMaintenanceCost)}</td>
                                 <td>${formatValue(remainingMortgage)}</td>
                                 <td>${formatValue(homeCurrentValue - remainingMortgage)}</td>
                             </tr>`;
@@ -257,9 +267,11 @@ document.addEventListener('DOMContentLoaded', function () {
         <table class="results-table">
             <tr><td>Total Rent Cost:</td><td>${formatValue(totalRentCost)}</td></tr>
             <tr><td>Mortgage Payment:</td><td>${formattedMonthlyPayment}</td></tr>
-            <tr><td>Total Mortgage Cost:</td><td>${formatValue(totalMortgageCost)}</td></tr>
-            <tr><td>Total Housing Cost:</td><td>${formatValue(totalHousingCost + totalRentCost)}</td></tr>
+            <tr><td>Closing Costs:</td><td>${formatValue(closingCosts)}</td></tr>
+            <tr><td>Total Mortgage Cost:</td><td>${formatValue(totalMortgageCost + closingCosts)}</td></tr>
+            <tr><td>Total Housing Cost:</td><td>${formatValue(totalHousingCost + totalRentCost + closingCosts)}</td></tr>
             <tr><td>Final Home Value:</td><td>${formatValue(homeCurrentValue)}</td></tr>
+            <tr><td>Home Value - Housing Cost:</td><td><strong>${formatValue(homeCurrentValue - (totalHousingCost + totalRentCost + closingCosts))}</strong></td></tr>
         </table>`;
 
 
